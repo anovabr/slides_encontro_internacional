@@ -29,6 +29,19 @@ class: center, middle, inverse
 #https://github.com/yihui/xaringan/issues/109
 ```
 
+```{r global options, include = FALSE}
+knitr::opts_chunk$set(echo=FALSE, include = TRUE, warning=FALSE, message=FALSE, fig.retina = 3)
+options(knitr.table.format = "html")
+```
+
+```{r xaringan-tile-view, echo=FALSE}
+xaringanExtra::use_tile_view()
+xaringanExtra::use_logo(
+  image_url = "http://www.deqm.puc-rio.br/wp-content/uploads/2020/08/logo-puc-pequena-pb.png",
+  width = "50px",
+  
+)
+```
 
 <style>
 .remark-slide-number {
@@ -49,22 +62,6 @@ class: center, middle, inverse
   background-color: gray;
 }
 </style>
-
-```{r global options, include = FALSE}
-knitr::opts_chunk$set(echo=FALSE, include = TRUE, warning=FALSE, message=FALSE, fig.retina = 3)
-options(knitr.table.format = "html")
-```
-
-```{r xaringan-tile-view, echo=FALSE}
-xaringanExtra::use_tile_view()
-xaringanExtra::use_logo(
-  image_url = "http://www.deqm.puc-rio.br/wp-content/uploads/2020/08/logo-puc-pequena-pb.png",
-  width = "50px",
-  
-)
-```
-
-
 
 ---
 
