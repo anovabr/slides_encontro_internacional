@@ -1,7 +1,7 @@
 ---
 title: "International symposium"
 subtitle: "COVID-19<br/>Longitudinal analysis"
-author: "Luis Anunciação, Lucas Barrozo, Fabiana Ribeiro, Anja Leist, Landeira-Fernandez"
+author: "Luis Anunciação, Lucas Barrozo, Anna Portugal, Fabiana Ribeiro, Anja Leist, Landeira-Fernandez"
 institute: "PUC-Rio, UFRJ, Universidade de Luxemburgo"
 date: "2020/27/03 (updated: `r Sys.Date()`)"
 output:
@@ -587,6 +587,8 @@ datatable(tab_demo_t2,
 
 This research was supported by PUC-Rio, UFRJ, and University of Luxembourg     
 Public note: 4.125.060  
-emails:  luisfca@puc-rio.br   
+emails:  luisfca@puc-rio.br, lucas.psic.rj@gmail.com, portugal.aca@gmail.com, landeira@puc-rio.br
+
+
 
 
