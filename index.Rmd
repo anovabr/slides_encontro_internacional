@@ -23,7 +23,6 @@ class: center, middle, inverse
 
 # Background & Motivation
 
-(test)
 
 ```{r, include=FALSE }
 #https://github.com/yihui/xaringan/issues/109
