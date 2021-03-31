@@ -586,7 +586,7 @@ datatable(tab_demo_t2,
 # Thank you
 
 This research was supported by PUC-Rio, UFRJ, and University of Luxembourg     
-Public note: 4.125.060  
+Public note: 4.125.060  (Plataforma Brasil)
 emails:  luisfca@puc-rio.br, lucas.psic.rj@gmail.com, portugal.aca@gmail.com, landeira@puc-rio.br
 
 
