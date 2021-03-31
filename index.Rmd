@@ -1,0 +1,592 @@
+---
+title: "International symposium"
+subtitle: "COVID-19<br/>Longitudinal analysis"
+author: "Luis Anunciação, Lucas Barrozo, Fabiana Ribeiro, Anja Leist, Landeira-Fernandez"
+institute: "PUC-Rio, UFRJ, Universidade de Luxemburgo"
+date: "2020/27/03 (updated: `r Sys.Date()`)"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: [default, metropolis, metropolis-fonts]
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      slideNumberFormat: |
+        <div class="progress-bar-container">
+          <div class="progress-bar" style="width: calc(%current% / %total% * 100%);">
+          </div>
+        </div>    
+---
+class: center, middle, inverse
+
+```{r, include=FALSE }
+#https://github.com/yihui/xaringan/issues/109
+```
+
+
+<style>
+.remark-slide-number {
+  position: inherit;
+}
+
+.remark-slide-number .progress-bar-container {
+  position: absolute;
+  bottom: 0;
+  height: 4px;
+  display: block;
+  left: 0;
+  right: 0;
+}
+
+.remark-slide-number .progress-bar {
+  height: 100%;
+  background-color: gray;
+}
+</style>
+
+```{r global options, include = FALSE}
+knitr::opts_chunk$set(echo=FALSE, include = TRUE, warning=FALSE, message=FALSE, fig.retina = 3)
+options(knitr.table.format = "html")
+```
+
+```{r xaringan-tile-view, echo=FALSE}
+xaringanExtra::use_tile_view()
+xaringanExtra::use_logo(
+  image_url = "http://www.deqm.puc-rio.br/wp-content/uploads/2020/08/logo-puc-pequena-pb.png",
+  width = "50px",
+  
+)
+```
+
+
+
+# Background & Motivation
+
+---
+
+# Background & Motivation
+
+.pull-left[
+
+1. On 11 Mar 2020, the World Health Organization (WHO) declared the outbreak a global pandemic;
+
+1. Brazil is fighting a terrible COVID-19 waves exacerbated by multiple inadequate responses;
+
+1. The rapidly evolving situation has drastically altered people's lives;
+
+1. Health also includes from the neck up diseases;
+
+]
+
+.pull-right[
+1. The uncertainties and fears associated with the outbreak, along with mass lockdowns and economic recession are predicted negatively impact the mental health;
+
+1. increase the psychological distress in the general population, as well as in persons with pre-existing mental disorders;
+
+1. Lack of interpersonal attachments is linked to poor physical, emotional, and mental health (Baumeister & Leary, 1995);
+
+1. There is a lot of forecasts related to economic aspects, but just a few related to mental health; 
+
+1. Understand the consequences of the social distance in mental health;
+]
+
+
+---
+class: center, middle, inverse
+
+# The current study
+
+---
+
+# Objectives & Methodology 
+
+.pull-left[
+1. This is an exploratory survey;
+
+1. Web-based data collection;
+
+1. A convenience-sampling plan was the main strategy;
+
+1. Participants were recruited at two times (the first current moment and 6 months later;
+
+]
+
+.pull-right[
+
+1. To explore the impacts of social distancing and quarantine in two waves in aspects related to mental health, especially in depression and anxiety among Brazilian participants; 
+
+1. To check for differences in anxiety and depression trajectories including time and quarantine-related variables as predictors (if you stay at home, how many hours you stay at home, how often you leave home).
+
+
+]
+
+---
+# Demographic aspects 
+
+```{r, include=FALSE }
+#base
+load("C:/Users/luisf/Dropbox/Puc-Rio/Projeto - COVID longitudinal/R base - covid 19 longitudinal.RData")
+#packages
+pacman::p_load(tidyverse, arsenal, janitor, dfSummary, DT, knitr, kableExtra, lme4, lmerTest, ggalluvial, patchwork)
+```
+
+
+```{r}
+theme_set(theme_bw())
+```
+
+
+```{r }
+ds_original_t1 %>% 
+  select(sexo, 
+         idade, escolaridade, estado_civil, rio_sp, quantos_filhos, plano_saude,
+         como_vive, pessoas_na_casa, pessoas_em_risco_casa,
+         renda_familiar_mensal, orientacao_politica,
+         fica_em_casa_t1, tem_saido_de_casa, falou_familia_pessoalmente,testou_coronavirus, 
+         conhece_alguem_coronavirus, segue_recomendacoes, concordo_covid_preocupacao_saude, 
+         concordo_quarentena, concordo_covid_preocupacao_saude, 
+         trabalho_antes_quarentena, trabalho_agora_quarentena, area_profissao,
+         preocupacao_pagar_conta, pensa_em_adiar_pagamento, starts_with("preocupacao_"), 
+         quanto_tempo_voce_acha_que_que_a_vida_voltara_ao_normal, 
+         antes_da_quarentena_coronavirus_voce_fumava, agora_durante_a_quarentena_coronavirus_voce_fuma, 
+         antes_da_quarentena_coronavirus_voce_bebia, agora_durante_a_quarentena_coronavirus_voce_bebe,
+         antes_da_quarentena_coronavirus_voce_fazia_exercicios_fisicos, 
+         agora_durante_a_quarentena_coronavirus_voce_faz_exercicios_fisicos,
+         agora_durante_a_quarentena_coronavirus_sua_alimentacao,
+         agora_durante_a_quarentena_coronavirus_seu_peso) %>% 
+  tableby(~.,.) %>% 
+  summary(., text = TRUE) %>% 
+  data.frame() -> tab_demo
+```
+
+
+
+```{r}
+#rmarkdown::paged_table(tab_demo)
+#summary(tab_demo, text=TRUE) %>% 
+#  as.data.frame(width = 20) %>% 
+#  knitr::kable(format = "markdown", longtable = TRUE)
+
+#kable(tab_demo, "markdown", booktabs = TRUE, longtable = TRUE, caption = "Test") %>%
+#  kable_styling(latex_options = c("hold_position", "repeat_header"))
+
+datatable(tab_demo,          
+          extensions = c('FixedColumns',"FixedHeader"),
+          options = list(scrollX = TRUE, 
+                         dom = 'tp', #no search, but pagination
+                         fixedHeader=TRUE))
+```
+
+---
+class: center, middle, inverse
+
+# Descriptives
+
+---
+class: middle, center
+
+# First wave
+## Contextual variables 
+
+```{r, eval = FALSE }
+ds_original_t1 %>% select(fica_em_casa_t1:falou_familia_pessoalmente) %>% 
+  DataExplorer::plot_bar()
+```
+
+```{r,  }
+col_names <- ds_original_t1 %>% select(fica_em_casa_t1:tem_saido_de_casa) %>% names
+plot_list <- list()
+for (i in col_names){
+  plot <- ds_original_t1 %>% filter(!is.na(.data[[i]])) %>% ggplot(., aes_string(x=1, y=i)) +
+    geom_bar(stat = "identity") 
+    #geom_text(aes(y = ((..count..)/sum(..count..)), 
+    #              label = scales::percent((..count..)/sum(..count..))), 
+    #          stat = "count", vjust = -0.25) 
+  #coord_polar("y", start=0, direction = -1) +
+  plot_list[[i]] <- plot
+}
+plot_grob <- gridExtra::arrangeGrob(grobs=plot_list)
+plot(plot_grob)
+```
+
+```{r out.width = "60%", eval = FALSE }
+pieplotter <- function(col) {
+  tibble(var = col) %>% 
+    count(var) %>% 
+    mutate(
+      p = n/sum(n),
+      y_mid = lag(cumsum(p), default = 0) + (p/2) 
+    ) %>% 
+    ggplot() +
+    geom_col(
+      aes(x = "", y = p, fill = var)
+    ) +
+    coord_polar(theta = "y") +
+    #geom_text(
+    #  aes(x = "", y = y_mid, label = scales::percent(p))
+    #) +
+    theme(
+      axis.text.x = element_blank()
+    )
+}
+map(ds_original_t1 %>% select(fica_em_casa_t1:tem_saido_de_casa) , pieplotter) %>% wrap_plots()& theme_minimal()
+```
+
+
+---
+class: middle, center
+
+# First wave
+## Contextual variables 
+
+
+```{r }
+col_names <- ds_original_t1 %>% select(area_profissao,preocupacao_pagar_conta,pensa_em_adiar_pagamento) %>% names
+plot_list <- list()
+for (i in col_names){
+  plot <- ds_original_t1 %>% filter(!is.na(.data[[i]])) %>% ggplot(., aes_string(x=1, y=i)) +
+    geom_bar(stat = "identity") 
+    #geom_text(aes(y = ((..count..)/sum(..count..)), 
+    #              label = scales::percent((..count..)/sum(..count..))), 
+    #          stat = "count", vjust = -0.25) 
+  #coord_polar("y", start=0, direction = -1) +
+  plot_list[[i]] <- plot
+}
+plot_grob <- gridExtra::arrangeGrob(grobs=plot_list)
+plot(plot_grob)
+```
+
+---
+class: center, middle, inverse
+
+# Results
+
+
+---
+class: middle, center
+
+# First wave
+
+## I'm worried about (...)
+
+```{r out.width = "65%"}
+library(likert)
+ds_original_t1 %>% select(starts_with("preocupacao_"),-preocupacao_pagar_conta) %>%
+  rename_all(., ~paste(str_remove_all(.,"preocupacao_"))) %>% 
+  rename_all(., ~paste(str_replace_all(.,"_", " "))) %>% 
+  mutate_all(.,factor, levels =  c("Nenhuma","Pouca","Bastante","Extrema")) %>% 
+  data.frame() %>% 
+  likert() %>% plot(., wrap = 10,ordered = T,
+                    low.color='darkblue', high.color='maroon') + 
+  theme(legend.position = "right")
+
+```
+
+---
+class: middle, center
+
+# First wave
+
+## Depression
+
+```{r}
+ds_original_t1 %>% 
+  filter(!is.na(sexo)) %>% 
+  ggplot(., aes(x=sexo, y = total_ces_t1)) + 
+         geom_boxplot() +
+  ggpubr::stat_compare_means(label.y = 65, label.x = 1.5,label = "p.signif") +
+  geom_hline(yintercept = 16, size = 1, color = "red", linetype = "dashed")
+
+```
+.footnote[[*] Overall mean = `r round(mean(ds_original_t1$total_ces_t1, na.rm=T),2)` (SD: `r round(sd(ds_original_t1$total_ces_t1, na.rm=T),2)`).]
+
+---
+class: middle, center
+
+# First wave
+
+## Anxiety
+
+```{r}
+ds_original_t1 %>% 
+  filter(!is.na(sexo)) %>% 
+  ggplot(., aes(x=sexo, y = total_gad_t1)) + 
+         geom_boxplot() +
+  ggpubr::stat_compare_means(label.y = 25, label.x = 1.5,label = "p.signif") +
+  geom_hline(yintercept = 10, size = 1, color = "red", linetype = "dashed")
+```
+.footnote[[*] Overall mean = `r round(mean(ds_original_t1$total_gad_t1, na.rm=T),2)` (SD: `r round(sd(ds_original_t1$total_gad_t1, na.rm=T),2)`).]
+
+---
+class: middle, center
+
+# First wave
+
+## Depression & Anxiety
+
+```{r}
+ggplot(ds_original_t1, aes(x = total_ces_t1, y = total_gad_t1)) +
+  geom_jitter() +
+  geom_smooth(method = "lm") +  
+  ggpubr::stat_cor()
+```
+
+
+
+---
+
+class: center, middle, inverse
+
+# Follow up
+
+---
+class: middle, center
+
+# Longitudinal analysis  
+
+
+
+```{r}
+d<-ds_t1_t2 %>% 
+  select(unique_id, fica_em_casa_t1, fica_em_casa_t2) %>% 
+  pivot_longer(-unique_id, names_to = "survey", values_to = "response") %>% 
+  rename(subject = unique_id) %>%  #daqui para baixo é detalhe
+  mutate(survey = str_replace_all(survey, "fica_em_casa_t1", "First wave")) %>% 
+  mutate(survey = str_replace_all(survey, "fica_em_casa_t2", "Second wave")) %>% 
+  mutate(response = factor(str_remove_all(response, "Entre*")))  %>% 
+  mutate(response = factor(str_remove_all(response, "ou o dia todo*")))  
+```
+
+
+```{r}
+#create a long dataset
+d<-d %>% 
+  group_by(survey,subject, response) %>% 
+  count() %>% 
+  mutate(pct = n / sum(n))
+```
+
+
+```{r  out.width = "65%"}
+#change levels order
+d <- transform(d,response = factor(response, rev(levels(response))))
+#plot
+ggplot(d,
+       aes(x = survey, stratum = response, alluvium = subject,
+           y = n,
+           fill = response)) + #data
+  scale_x_discrete(expand = c(.1, .1)) + #
+  geom_flow() + #shade area conecting the rectangles
+  geom_stratum(alpha = .7) + 
+  geom_text(aes(label = paste0(..stratum.., "\n", n, "\n", 
+                             scales::percent(..prop..) )), stat = "stratum", size = 3) + #text inside each rectangle
+  scale_fill_brewer(type = "qual", palette = "Set2") +
+  theme_void() +
+  theme(legend.position = "none") #hide legends
+```
+
+
+
+---
+class: inverse, middle, center
+
+# Hypothesis
+## Mental health (Time evolution and group condition)
+
+--
+Depression (CES)
+
+---
+# Table & Graph
+
+
+.pull-left[
+
+```{r, results = 'asis'}
+ds_t1_t2 %>% 
+  tableby(group ~ total_ces_t1 + total_ces_t2, total = FALSE, test = FALSE,data = .) %>% 
+  summary()
+```
+]
+.pull-right[
+
+
+```{r }
+ds_t1_t2 %>% 
+  select(total_ces_t1,total_ces_t2, unique_id,group) %>% 
+  pivot_longer(-c(group, unique_id), names_to = "time") %>% 
+  ggplot(., aes(x = time, y = value, group = group, color = group)) +
+  stat_summary(geom = "line", fun = "mean") +
+  stat_summary(fun.data = mean_se, geom = "errorbar", width = 0.2) +
+  theme_bw()
+
+```
+]
+
+
+---
+
+# Overall results 
+
+```{r}
+t.test(ds_t1_t2$total_ces_t1, ds_t1_t2$total_ces_t2, paired = T) %>% 
+  pander::pander()
+```
+
+
+
+
+---
+
+# Interaction 
+
+```{r}
+mod_ces <- ds_t1_t2 %>% 
+  select(total_ces_t1,total_ces_t2, unique_id,group) %>% 
+  pivot_longer(-c(group, unique_id), names_to = "time") %>% 
+  lmer(value ~ factor(group) * factor(time) + (1|unique_id), data = .)
+
+anova(mod_ces, type = 3, ddf = "Satterthwaite") %>% 
+  kable(., digits = 2)
+```
+
+---
+class: inverse, middle, center
+
+# Hypothesis
+## Mental health (Time evolution and group condition)
+
+--
+
+Depression (CES)
+
+--
+
+Anxiety (GAD)
+
+---
+# Overall results 
+
+.pull-left[
+
+```{r, results = 'asis'}
+ds_t1_t2 %>% 
+  tableby(group ~ total_gad_t1 + total_gad_t2, total = FALSE, test = FALSE,data = .) %>% 
+  summary()
+```
+]
+.pull-right[
+
+
+```{r }
+ds_t1_t2 %>% 
+  select(total_gad_t1,total_gad_t2, unique_id,group) %>% 
+  pivot_longer(-c(group, unique_id), names_to = "time") %>% 
+  ggplot(., aes(x = time, y = value, group = group, color = group)) +
+  stat_summary(geom = "line", fun = "mean") +
+  stat_summary(fun.data = mean_se, geom = "errorbar", width = 0.2)
+
+```
+]
+
+
+---
+
+# Overall results 
+
+```{r}
+t.test(ds_t1_t2$total_gad_t1, ds_t1_t2$total_gad_t2, paired = T) %>% 
+  pander::pander()
+```
+
+---
+
+# Interaction 
+
+
+```{r}
+mod_gad <- ds_t1_t2 %>% 
+  select(total_gad_t1,total_gad_t2, unique_id,group) %>% 
+  pivot_longer(-c(group, unique_id), names_to = "time") %>% 
+  lmer(value ~ factor(group) * factor(time) + (1|unique_id), data = .)
+
+anova(mod_gad, type = 3, ddf = "Satterthwaite") %>% 
+  kable(., digits = 2)
+```
+
+```{r}
+ds_original_t2 %>% 
+  select(
+    como_vive, pessoas_na_casa, pessoas_em_risco_casa,
+    renda_familiar_mensal, orientacao_politica,
+    fica_em_casa_t2, tem_saido_de_casa, falou_familia_pessoalmente, 
+    segue_recomendacoes, concordo_covid_preocupacao_saude, 
+    concordo_quarentena, concordo_covid_preocupacao_saude, 
+    
+    trabalho_apos_quarentena, 
+    
+    preocupacao_pagar_conta, pensa_em_adiar_pagamento, 
+    
+    starts_with("preocupacao_"), 
+    
+    quanto_tempo_voce_acha_que_que_a_vida_voltara_ao_normal,
+    atualmente_voce_fuma,
+    atualmente_voce_bebe,
+    atualmente_voce_faz_exercicios_fisicos,
+    atualmente_sua_alimentacao,
+    atualmente_seu_peso,
+    plano_saude,
+    como_vive
+    ) %>% 
+  tableby(~.,.) %>% 
+  summary(., text = TRUE) %>% 
+  data.frame() -> tab_demo_t2
+```
+
+
+```{r, eval = FALSE }
+datatable(tab_demo_t2,          
+          extensions = c('FixedColumns',"FixedHeader"),
+          options = list(scrollX = TRUE, 
+                         dom = 'tp', #no search, but pagination
+                         fixedHeader=TRUE))
+```
+
+
+---
+# Conclusions  
+
+.pull-left[
+
+1. The depression levels were above the recommended cutoff score at both times;
+
+1. The anxiety levels were only close to cutoff, suggesting that these participants were not experiencing high anxiety during both times (however, subclinical symptoms are not desconsidered);
+
+1. Compared to men, Women presented significantly higher results for depression and anxiety, as observed in the literature, in both times;
+
+1. Social distancing, lockdowns, and quarantine are supposed to partially explain these outcomes;
+]
+
+.pull-right[
+1. No significant differences were found in depression and anxiety among the groups (stay x leave)
+
+1. Regardless the passage of time or being able to chose between stay of leave from home, they remained with high results
+
+1. Non-significant results <b>are results</b> and we are still discussing our findings
+
+
+
+]
+
+.footnote[[*] Not really. See next page.]
+
+
+---
+# Thank you
+
+This research was supported by PUC-Rio, UFRJ, and University of Luxembourg     
+Public note: 4.125.060  
+emails:  luisfca@puc-rio.br   
+
+
