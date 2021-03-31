@@ -3,12 +3,13 @@ title: "International symposium"
 subtitle: "COVID-19<br/>Longitudinal analysis"
 author: "Luis Anunciação, Lucas Barrozo, Anna Portugal, Fabiana Ribeiro, Anja Leist, Landeira-Fernandez"
 institute: "PUC-Rio, UFRJ, Universidade de Luxemburgo"
-date: "2020/27/03 (updated: `r Sys.Date()`)"
+date: "`r format(Sys.time(), '%d %B, %Y %X')`"
 output:
   xaringan::moon_reader:
     lib_dir: libs
     css: [default, metropolis, metropolis-fonts]
     nature:
+      #ratio: '16:9'
       highlightStyle: github
       highlightLines: true
       countIncrementalSlides: false
